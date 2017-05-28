@@ -1,0 +1,528 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TrafficModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="TrafficModelStoreContainer">
+          <EntitySet Name="accident_requests" EntityType="TrafficModel.Store.accident_requests" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="area_range" EntityType="TrafficModel.Store.area_range" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="city" EntityType="TrafficModel.Store.city" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="country" EntityType="TrafficModel.Store.country" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="real_accident" EntityType="TrafficModel.Store.real_accident" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="users" EntityType="TrafficModel.Store.users" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_accident_requests_area_range" Association="TrafficModel.Store.FK_accident_requests_area_range">
+            <End Role="area_range" EntitySet="area_range" />
+            <End Role="accident_requests" EntitySet="accident_requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_area_range_city" Association="TrafficModel.Store.FK_area_range_city">
+            <End Role="city" EntitySet="city" />
+            <End Role="area_range" EntitySet="area_range" />
+          </AssociationSet>
+          <AssociationSet Name="FK_area_range_country" Association="TrafficModel.Store.FK_area_range_country">
+            <End Role="country" EntitySet="country" />
+            <End Role="area_range" EntitySet="area_range" />
+          </AssociationSet>
+          <AssociationSet Name="FK_city_country" Association="TrafficModel.Store.FK_city_country">
+            <End Role="country" EntitySet="country" />
+            <End Role="city" EntitySet="city" />
+          </AssociationSet>
+          <AssociationSet Name="FK_real_accident_area_range" Association="TrafficModel.Store.FK_real_accident_area_range">
+            <End Role="area_range" EntitySet="area_range" />
+            <End Role="real_accident" EntitySet="real_accident" />
+          </AssociationSet>
+          <AssociationSet Name="FK_users_city" Association="TrafficModel.Store.FK_users_city">
+            <End Role="city" EntitySet="city" />
+            <End Role="users" EntitySet="users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_users_country" Association="TrafficModel.Store.FK_users_country">
+            <End Role="country" EntitySet="country" />
+            <End Role="users" EntitySet="users" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="accident_requests">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="driver_id" Type="int" />
+          <Property Name="latitude" Type="decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="longitude" Type="decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="address" Type="nvarchar(max)" />
+          <Property Name="area_id" Type="int" Nullable="false" />
+          <Property Name="time" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="area_range">
+          <Key>
+            <PropertyRef Name="area_id" />
+          </Key>
+          <Property Name="area_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="country_id" Type="int" Nullable="false" />
+          <Property Name="city_id" Type="int" Nullable="false" />
+          <Property Name="max_latitude" Type="decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="min_latitude" Type="decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="max_longitude" Type="decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="min_longitude" Type="decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="time" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="city">
+          <Key>
+            <PropertyRef Name="city_id" />
+          </Key>
+          <Property Name="city_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="city_name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="country_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="country">
+          <Key>
+            <PropertyRef Name="country_id" />
+          </Key>
+          <Property Name="country_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="country_name" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="real_accident">
+          <Key>
+            <PropertyRef Name="accident_ID" />
+          </Key>
+          <Property Name="accident_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="area_id" Type="int" Nullable="false" />
+          <Property Name="location" Type="nvarchar(max)" />
+          <Property Name="latitude" Type="decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="longitude" Type="decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="happened_time" Type="datetime" Nullable="false" />
+          <Property Name="solved" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="driver_id" />
+          </Key>
+          <Property Name="driver_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="nvarchar" Nullable="false" MaxLength="15" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="15" />
+          <Property Name="email" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="alternative_email" Type="nvarchar" MaxLength="50" />
+          <Property Name="user_name" Type="nvarchar" Nullable="false" MaxLength="25" />
+          <Property Name="country_id" Type="int" Nullable="false" />
+          <Property Name="city_id" Type="int" />
+          <Property Name="phone" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="birth_date" Type="date" />
+          <Property Name="gender_id" Type="int" />
+          <Property Name="signup_date" Type="datetime" Nullable="false" />
+          <Property Name="last_modified" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_accident_requests_area_range">
+          <End Role="area_range" Type="TrafficModel.Store.area_range" Multiplicity="1" />
+          <End Role="accident_requests" Type="TrafficModel.Store.accident_requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="area_range">
+              <PropertyRef Name="area_id" />
+            </Principal>
+            <Dependent Role="accident_requests">
+              <PropertyRef Name="area_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_area_range_city">
+          <End Role="city" Type="TrafficModel.Store.city" Multiplicity="1" />
+          <End Role="area_range" Type="TrafficModel.Store.area_range" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="city">
+              <PropertyRef Name="city_id" />
+            </Principal>
+            <Dependent Role="area_range">
+              <PropertyRef Name="city_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_area_range_country">
+          <End Role="country" Type="TrafficModel.Store.country" Multiplicity="1" />
+          <End Role="area_range" Type="TrafficModel.Store.area_range" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="country_id" />
+            </Principal>
+            <Dependent Role="area_range">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_city_country">
+          <End Role="country" Type="TrafficModel.Store.country" Multiplicity="1" />
+          <End Role="city" Type="TrafficModel.Store.city" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="country_id" />
+            </Principal>
+            <Dependent Role="city">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_real_accident_area_range">
+          <End Role="area_range" Type="TrafficModel.Store.area_range" Multiplicity="1" />
+          <End Role="real_accident" Type="TrafficModel.Store.real_accident" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="area_range">
+              <PropertyRef Name="area_id" />
+            </Principal>
+            <Dependent Role="real_accident">
+              <PropertyRef Name="area_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_users_city">
+          <End Role="city" Type="TrafficModel.Store.city" Multiplicity="0..1" />
+          <End Role="users" Type="TrafficModel.Store.users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="city">
+              <PropertyRef Name="city_id" />
+            </Principal>
+            <Dependent Role="users">
+              <PropertyRef Name="city_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_users_country">
+          <End Role="country" Type="TrafficModel.Store.country" Multiplicity="1" />
+          <End Role="users" Type="TrafficModel.Store.users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="country_id" />
+            </Principal>
+            <Dependent Role="users">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TrafficModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TrafficEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="accident_requests" EntityType="TrafficModel.accident_requests" />
+          <EntitySet Name="area_range" EntityType="TrafficModel.area_range" />
+          <EntitySet Name="cities" EntityType="TrafficModel.city" />
+          <EntitySet Name="countries" EntityType="TrafficModel.country" />
+          <EntitySet Name="users" EntityType="TrafficModel.user" />
+          <AssociationSet Name="FK_accident_requests_area_range" Association="TrafficModel.FK_accident_requests_area_range">
+            <End Role="area_range" EntitySet="area_range" />
+            <End Role="accident_requests" EntitySet="accident_requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_accident_requests_users" Association="TrafficModel.FK_accident_requests_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="accident_requests" EntitySet="accident_requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_area_range_city" Association="TrafficModel.FK_area_range_city">
+            <End Role="city" EntitySet="cities" />
+            <End Role="area_range" EntitySet="area_range" />
+          </AssociationSet>
+          <AssociationSet Name="FK_area_range_country" Association="TrafficModel.FK_area_range_country">
+            <End Role="country" EntitySet="countries" />
+            <End Role="area_range" EntitySet="area_range" />
+          </AssociationSet>
+          <AssociationSet Name="FK_city_country" Association="TrafficModel.FK_city_country">
+            <End Role="country" EntitySet="countries" />
+            <End Role="city" EntitySet="cities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_users_city" Association="TrafficModel.FK_users_city">
+            <End Role="city" EntitySet="cities" />
+            <End Role="users" EntitySet="users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_users_country" Association="TrafficModel.FK_users_country">
+            <End Role="country" EntitySet="countries" />
+            <End Role="users" EntitySet="users" />
+          </AssociationSet>
+          <EntitySet Name="real_accident" EntityType="TrafficModel.real_accident" />
+          <AssociationSet Name="FK_real_accident_area_range" Association="TrafficModel.FK_real_accident_area_range">
+            <End Role="area_range" EntitySet="area_range" />
+            <End Role="real_accident" EntitySet="real_accident" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="accident_requests">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="driver_id" Type="Int32" />
+          <Property Name="latitude" Type="Decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="longitude" Type="Decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="address" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="area_id" Type="Int32" Nullable="false" />
+          <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="area_range" Relationship="TrafficModel.FK_accident_requests_area_range" FromRole="accident_requests" ToRole="area_range" />
+          <NavigationProperty Name="user" Relationship="TrafficModel.FK_accident_requests_users" FromRole="accident_requests" ToRole="users" />
+        </EntityType>
+        <EntityType Name="area_range">
+          <Key>
+            <PropertyRef Name="area_id" />
+          </Key>
+          <Property Name="area_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="country_id" Type="Int32" Nullable="false" />
+          <Property Name="city_id" Type="Int32" Nullable="false" />
+          <Property Name="max_latitude" Type="Decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="min_latitude" Type="Decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="max_longitude" Type="Decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="min_longitude" Type="Decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="accident_requests" Relationship="TrafficModel.FK_accident_requests_area_range" FromRole="area_range" ToRole="accident_requests" />
+          <NavigationProperty Name="city" Relationship="TrafficModel.FK_area_range_city" FromRole="area_range" ToRole="city" />
+          <NavigationProperty Name="country" Relationship="TrafficModel.FK_area_range_country" FromRole="area_range" ToRole="country" />
+          <NavigationProperty Name="real_accident" Relationship="TrafficModel.FK_real_accident_area_range" FromRole="area_range" ToRole="real_accident" />
+        </EntityType>
+        <EntityType Name="city">
+          <Key>
+            <PropertyRef Name="city_id" />
+          </Key>
+          <Property Name="city_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="city_name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="country_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="area_range" Relationship="TrafficModel.FK_area_range_city" FromRole="city" ToRole="area_range" />
+          <NavigationProperty Name="country" Relationship="TrafficModel.FK_city_country" FromRole="city" ToRole="country" />
+          <NavigationProperty Name="users" Relationship="TrafficModel.FK_users_city" FromRole="city" ToRole="users" />
+        </EntityType>
+        <EntityType Name="country">
+          <Key>
+            <PropertyRef Name="country_id" />
+          </Key>
+          <Property Name="country_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="country_name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="area_range" Relationship="TrafficModel.FK_area_range_country" FromRole="country" ToRole="area_range" />
+          <NavigationProperty Name="cities" Relationship="TrafficModel.FK_city_country" FromRole="country" ToRole="city" />
+          <NavigationProperty Name="users" Relationship="TrafficModel.FK_users_country" FromRole="country" ToRole="users" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="driver_id" />
+          </Key>
+          <Property Name="driver_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
+          <Property Name="last_name" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="alternative_email" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="user_name" Type="String" Nullable="false" MaxLength="25" Unicode="true" FixedLength="false" />
+          <Property Name="country_id" Type="Int32" Nullable="false" />
+          <Property Name="city_id" Type="Int32" />
+          <Property Name="phone" Type="String" Nullable="false" MaxLength="25" Unicode="false" FixedLength="false" />
+          <Property Name="birth_date" Type="DateTime" Precision="0" />
+          <Property Name="gender_id" Type="Int32" />
+          <Property Name="signup_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="last_modified" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="accident_requests" Relationship="TrafficModel.FK_accident_requests_users" FromRole="users" ToRole="accident_requests" />
+          <NavigationProperty Name="city" Relationship="TrafficModel.FK_users_city" FromRole="users" ToRole="city" />
+          <NavigationProperty Name="country" Relationship="TrafficModel.FK_users_country" FromRole="users" ToRole="country" />
+        </EntityType>
+        <Association Name="FK_accident_requests_area_range">
+          <End Role="area_range" Type="TrafficModel.area_range" Multiplicity="1" />
+          <End Role="accident_requests" Type="TrafficModel.accident_requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="area_range">
+              <PropertyRef Name="area_id" />
+            </Principal>
+            <Dependent Role="accident_requests">
+              <PropertyRef Name="area_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_accident_requests_users">
+          <End Role="users" Type="TrafficModel.user" Multiplicity="0..1" />
+          <End Role="accident_requests" Type="TrafficModel.accident_requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="driver_id" />
+            </Principal>
+            <Dependent Role="accident_requests">
+              <PropertyRef Name="driver_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_area_range_city">
+          <End Role="city" Type="TrafficModel.city" Multiplicity="1" />
+          <End Role="area_range" Type="TrafficModel.area_range" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="city">
+              <PropertyRef Name="city_id" />
+            </Principal>
+            <Dependent Role="area_range">
+              <PropertyRef Name="city_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_area_range_country">
+          <End Role="country" Type="TrafficModel.country" Multiplicity="1" />
+          <End Role="area_range" Type="TrafficModel.area_range" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="country_id" />
+            </Principal>
+            <Dependent Role="area_range">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_city_country">
+          <End Role="country" Type="TrafficModel.country" Multiplicity="1" />
+          <End Role="city" Type="TrafficModel.city" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="country_id" />
+            </Principal>
+            <Dependent Role="city">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_users_city">
+          <End Role="city" Type="TrafficModel.city" Multiplicity="0..1" />
+          <End Role="users" Type="TrafficModel.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="city">
+              <PropertyRef Name="city_id" />
+            </Principal>
+            <Dependent Role="users">
+              <PropertyRef Name="city_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_users_country">
+          <End Role="country" Type="TrafficModel.country" Multiplicity="1" />
+          <End Role="users" Type="TrafficModel.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="country_id" />
+            </Principal>
+            <Dependent Role="users">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="real_accident">
+          <Key>
+            <PropertyRef Name="accident_ID" />
+          </Key>
+          <Property Type="Int32" Name="accident_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="location" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="latitude" Nullable="false" Precision="10" Scale="8" />
+          <Property Type="Decimal" Name="longitude" Nullable="false" Precision="10" Scale="8" />
+          <Property Type="DateTime" Name="happened_time" Nullable="false" Precision="3" />
+          <Property Type="Boolean" Name="solved" Nullable="false" />
+          <Property Type="Int32" Name="area_id" Nullable="false" />
+          <NavigationProperty Name="area_range" Relationship="TrafficModel.FK_real_accident_area_range" FromRole="real_accident" ToRole="area_range" />
+        </EntityType>
+        <Association Name="FK_real_accident_area_range">
+          <End Type="TrafficModel.area_range" Role="area_range" Multiplicity="1" />
+          <End Type="TrafficModel.real_accident" Role="real_accident" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="area_range">
+              <PropertyRef Name="area_id" />
+            </Principal>
+            <Dependent Role="real_accident">
+              <PropertyRef Name="area_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TrafficModelStoreContainer" CdmEntityContainer="TrafficEntities">
+          <EntitySetMapping Name="accident_requests">
+            <EntityTypeMapping TypeName="TrafficModel.accident_requests">
+              <MappingFragment StoreEntitySet="accident_requests">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="driver_id" ColumnName="driver_id" />
+                <ScalarProperty Name="latitude" ColumnName="latitude" />
+                <ScalarProperty Name="longitude" ColumnName="longitude" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="area_id" ColumnName="area_id" />
+                <ScalarProperty Name="time" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="area_range">
+            <EntityTypeMapping TypeName="TrafficModel.area_range">
+              <MappingFragment StoreEntitySet="area_range">
+                <ScalarProperty Name="area_id" ColumnName="area_id" />
+                <ScalarProperty Name="country_id" ColumnName="country_id" />
+                <ScalarProperty Name="city_id" ColumnName="city_id" />
+                <ScalarProperty Name="max_latitude" ColumnName="max_latitude" />
+                <ScalarProperty Name="min_latitude" ColumnName="min_latitude" />
+                <ScalarProperty Name="max_longitude" ColumnName="max_longitude" />
+                <ScalarProperty Name="min_longitude" ColumnName="min_longitude" />
+                <ScalarProperty Name="time" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cities">
+            <EntityTypeMapping TypeName="TrafficModel.city">
+              <MappingFragment StoreEntitySet="city">
+                <ScalarProperty Name="city_id" ColumnName="city_id" />
+                <ScalarProperty Name="city_name" ColumnName="city_name" />
+                <ScalarProperty Name="country_id" ColumnName="country_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="countries">
+            <EntityTypeMapping TypeName="TrafficModel.country">
+              <MappingFragment StoreEntitySet="country">
+                <ScalarProperty Name="country_id" ColumnName="country_id" />
+                <ScalarProperty Name="country_name" ColumnName="country_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="TrafficModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="driver_id" ColumnName="driver_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="alternative_email" ColumnName="alternative_email" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="country_id" ColumnName="country_id" />
+                <ScalarProperty Name="city_id" ColumnName="city_id" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="birth_date" ColumnName="birth_date" />
+                <ScalarProperty Name="gender_id" ColumnName="gender_id" />
+                <ScalarProperty Name="signup_date" ColumnName="signup_date" />
+                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="real_accident">
+            <EntityTypeMapping TypeName="TrafficModel.real_accident">
+              <MappingFragment StoreEntitySet="real_accident">
+                <ScalarProperty Name="area_id" ColumnName="area_id" />
+                <ScalarProperty Name="solved" ColumnName="solved" />
+                <ScalarProperty Name="happened_time" ColumnName="happened_time" />
+                <ScalarProperty Name="longitude" ColumnName="longitude" />
+                <ScalarProperty Name="latitude" ColumnName="latitude" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="accident_ID" ColumnName="accident_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
