@@ -88,11 +88,14 @@ namespace GP_Report_Request.Controllers
                 // accident_requests.time = Convert.ToDateTime("2017-05-25 09:16:00.000");
 
                 //accident_requests groupBy Area_id then count if Area_id >=9
+
                 string AR_ID = "", status = "";
 
+                //Accident classification by it's area_id column , then from the new generated table we get (id,count,address)
                 var real_accident = db.accident_requests.GroupBy(a => a.area_id).
                  Select(g => new { Area_ID = g.Key, count = g.Count(), address = g.Select(a => a.address) }).ToList();
 
+                //select all accidents area_id from the real_accident table and store it in a var variable
                 var verified_accident2 = db.real_accident.Select(a=>a.area_id).ToList();
 
                 //Verify_Accident
@@ -108,6 +111,7 @@ namespace GP_Report_Request.Controllers
                     {
                         status += "count is reached to max and Area_ID is (" + item.Area_ID + ") </br>";
                         //insert Area_Id to real_accident table  instead 
+
 
                         if (!verified_accident2.Contains(verified_accident.area_id))
                         {
@@ -262,7 +266,7 @@ namespace GP_Report_Request.Controllers
 
 
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, accident_requests);
-                response.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = accident_requests.area_id }));
+                response.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = accident_requests.area_id })); 
                 return response;
             }
             else
